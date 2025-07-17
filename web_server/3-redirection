@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Configure Nginx on a new Ubuntu machine with a permanent redirect for /redirect_me
+
+sudo apt-get update
+sudo apt-get install nginx -y
+echo "Holberton School" | sudo tee /var/www/html/index.html
+
+new_config="server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ^~ /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}"
+
+echo "$new_config" | sudo tee /etc/nginx/sites-available/default
+sudo nginx -t
+sudo service nginx restart
