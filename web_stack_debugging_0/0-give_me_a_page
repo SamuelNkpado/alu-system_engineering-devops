@@ -1,9 +1,12 @@
+#!/usr/bin/env bash
 
+docker run -p 8080:80 -d -it holbertonschool/265-0 /bin/bash
 
+apt-get update
+apt-get install apache2 -y
 
+service apache2 start
 
-rm /etc/nginx/sites-enabled/default
-cd /etc/nginx/sites-enabled/
-ln -s ../sites-available/default .
-service nginx restart
-curl 0:80
+echo "Hello Holberton" > /var/www/html/index.html
+
+curl http://localhost:8080
